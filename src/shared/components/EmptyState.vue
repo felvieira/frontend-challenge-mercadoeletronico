@@ -6,18 +6,28 @@
         v-if="icon"
         class="empty-state__icon" 
       />
-      <h3 class="empty-state__title">{{ title }}</h3>
-      <p v-if="message" class="empty-state__message">{{ message }}</p>
+      <h3 class="empty-state__title">
+        {{ title }}
+      </h3>
+      <p
+        v-if="message"
+        class="empty-state__message"
+      >
+        {{ message }}
+      </p>
       
-      <div v-if="$slots.actions" class="empty-state__actions">
+      <div
+        v-if="$slots.actions"
+        class="empty-state__actions"
+      >
         <slot name="actions" />
       </div>
       
       <button
         v-else-if="actionText && actionHandler"
-        @click="actionHandler"
         class="empty-state__button"
         type="button"
+        @click="actionHandler"
       >
         {{ actionText }}
       </button>
@@ -26,10 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import type { DefineComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 
 interface Props {
-  icon?: DefineComponent
+  icon?: FunctionalComponent
   title: string
   message?: string
   actionText?: string

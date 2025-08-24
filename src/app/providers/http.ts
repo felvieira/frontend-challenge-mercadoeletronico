@@ -1,14 +1,19 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios'
 import { handleAxiosError, logError } from '@/shared/services/errorHandler'
 
 const DEFAULT_TIMEOUT = 15000
-const DEFAULT_RETRY_COUNT = 3
 const DEFAULT_RETRY_DELAY = 1000
 
 interface RetryConfig {
   retries?: number
   retryDelay?: number
   retryCondition?: (error: AxiosError) => boolean
+}
+
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    retryConfig?: RetryConfig
+  }
 }
 
 function createHttpClient(): AxiosInstance {

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import OrderCard from '../components/OrderCard.vue'
 import type { Order } from '../api/orders.schemas'
 

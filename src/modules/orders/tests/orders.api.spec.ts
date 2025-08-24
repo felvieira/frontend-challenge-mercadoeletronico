@@ -1,12 +1,19 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { getOrderById, getOrders } from '../api/orders.api'
-import { http } from '@/app/providers/http'
 import type { Order } from '../api/orders.schemas'
 
-// Mock the HTTP client
-vi.mock('@/app/providers/http')
+const mockHttpGet = vi.fn()
 
-const mockHttp = vi.mocked(http)
+// Mock the HTTP client
+vi.mock('@/app/providers/http', () => ({
+  http: {
+    get: mockHttpGet,
+    post: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
+    patch: vi.fn()
+  }
+}))
 
 const mockApiResponse: Order = {
   id: 1,
@@ -42,20 +49,18 @@ const mockOrdersResponse: Order[] = [
 ]
 
 describe('getOrderById', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('makes HTTP GET request to correct endpoint', async () => {
-    mockHttp.get.mockResolvedValueOnce({ data: mockApiResponse })
+    vi.clearAllMocks()
+    mockHttpGet.mockResolvedValueOnce({ data: mockApiResponse })
 
     await getOrderById(1)
 
-    expect(mockHttp.get).toHaveBeenCalledWith('/orders/1')
+    expect(mockHttpGet).toHaveBeenCalledWith('/orders/1')
   })
 
   it('returns parsed order data when API succeeds', async () => {
-    mockHttp.get.mockResolvedValueOnce({ data: mockApiResponse })
+    vi.clearAllMocks()
+    mockHttpGet.mockResolvedValueOnce({ data: mockApiResponse })
 
     const result = await getOrderById(1)
 
@@ -63,8 +68,9 @@ describe('getOrderById', () => {
   })
 
   it('validates response data with Zod schema', async () => {
+    vi.clearAllMocks()
     const invalidResponse = { invalid: 'data' }
-    mockHttp.get.mockResolvedValueOnce({ data: invalidResponse })
+    mockHttpGet.mockResolvedValueOnce({ data: invalidResponse })
 
     const result = await getOrderById(1)
 
@@ -73,7 +79,8 @@ describe('getOrderById', () => {
   })
 
   it('falls back to mock data when API fails', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('Network error'))
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce(new Error('Network error'))
 
     const result = await getOrderById(1)
 
@@ -83,7 +90,8 @@ describe('getOrderById', () => {
   })
 
   it('falls back to mock data when API returns 404', async () => {
-    mockHttp.get.mockRejectedValueOnce({ 
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce({ 
       response: { status: 404 } 
     })
 
@@ -94,7 +102,8 @@ describe('getOrderById', () => {
   })
 
   it('includes delay for fallback mock data', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('Network error'))
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce(new Error('Network error'))
 
     const start = Date.now()
     await getOrderById(1)
@@ -104,11 +113,12 @@ describe('getOrderById', () => {
   })
 
   it('handles different order IDs correctly', async () => {
-    mockHttp.get.mockResolvedValueOnce({ data: { ...mockApiResponse, id: 123 } })
+    vi.clearAllMocks()
+    mockHttpGet.mockResolvedValueOnce({ data: { ...mockApiResponse, id: 123 } })
 
     await getOrderById(123)
 
-    expect(mockHttp.get).toHaveBeenCalledWith('/orders/123')
+    expect(mockHttpGet).toHaveBeenCalledWith('/orders/123')
   })
 
   it('preserves all order data from API response', async () => {
@@ -121,7 +131,7 @@ describe('getOrderById', () => {
       }
     }
     
-    mockHttp.get.mockResolvedValueOnce({ data: fullOrderResponse })
+    mockHttpGet.mockResolvedValueOnce({ data: fullOrderResponse })
 
     const result = await getOrderById(1)
 
@@ -131,20 +141,18 @@ describe('getOrderById', () => {
 })
 
 describe('getOrders', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('makes HTTP GET request to orders endpoint', async () => {
-    mockHttp.get.mockResolvedValueOnce({ data: mockOrdersResponse })
+    vi.clearAllMocks()
+    mockHttpGet.mockResolvedValueOnce({ data: mockOrdersResponse })
 
     await getOrders()
 
-    expect(mockHttp.get).toHaveBeenCalledWith('/orders')
+    expect(mockHttpGet).toHaveBeenCalledWith('/orders')
   })
 
   it('returns array of parsed orders when API succeeds', async () => {
-    mockHttp.get.mockResolvedValueOnce({ data: mockOrdersResponse })
+    vi.clearAllMocks()
+    mockHttpGet.mockResolvedValueOnce({ data: mockOrdersResponse })
 
     const result = await getOrders()
 
@@ -155,7 +163,8 @@ describe('getOrders', () => {
   })
 
   it('validates each order in response array', async () => {
-    mockHttp.get.mockResolvedValueOnce({ data: mockOrdersResponse })
+    vi.clearAllMocks()
+    mockHttpGet.mockResolvedValueOnce({ data: mockOrdersResponse })
 
     const result = await getOrders()
 
@@ -166,7 +175,8 @@ describe('getOrders', () => {
   })
 
   it('returns empty array when API returns non-array', async () => {
-    mockHttp.get.mockResolvedValueOnce({ data: { notAnArray: true } })
+    vi.clearAllMocks()
+    mockHttpGet.mockResolvedValueOnce({ data: { notAnArray: true } })
 
     const result = await getOrders()
 
@@ -175,7 +185,8 @@ describe('getOrders', () => {
   })
 
   it('falls back to mock data when API fails', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('Network error'))
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce(new Error('Network error'))
 
     const result = await getOrders()
 
@@ -185,7 +196,7 @@ describe('getOrders', () => {
   })
 
   it('includes delay for fallback mock data', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('Network error'))
+    mockHttpGet.mockRejectedValueOnce(new Error('Network error'))
 
     const start = Date.now()
     await getOrders()
@@ -195,7 +206,8 @@ describe('getOrders', () => {
   })
 
   it('returns multiple mock orders as fallback', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('Network error'))
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce(new Error('Network error'))
 
     const result = await getOrders()
 
@@ -207,7 +219,8 @@ describe('getOrders', () => {
   })
 
   it('handles CORS errors gracefully', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('CORS error'))
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce(new Error('CORS error'))
 
     const result = await getOrders()
 
@@ -216,7 +229,8 @@ describe('getOrders', () => {
   })
 
   it('handles timeout errors gracefully', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('timeout'))
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce(new Error('timeout'))
 
     const result = await getOrders()
 
@@ -225,12 +239,13 @@ describe('getOrders', () => {
   })
 
   it('parses partial order data correctly', async () => {
+    vi.clearAllMocks()
     const partialOrders = [
       { id: 1, number: '123' },
       { id: 2, number: '456', amount: 1000 }
     ]
     
-    mockHttp.get.mockResolvedValueOnce({ data: partialOrders })
+    mockHttpGet.mockResolvedValueOnce({ data: partialOrders })
 
     const result = await getOrders()
 
@@ -242,12 +257,9 @@ describe('getOrders', () => {
 })
 
 describe('API error handling', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('handles network connectivity issues', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('Network Error'))
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce(new Error('Network Error'))
 
     const ordersPromise = getOrders()
     const orderPromise = getOrderById(1)
@@ -257,7 +269,8 @@ describe('API error handling', () => {
   })
 
   it('handles server errors (500)', async () => {
-    mockHttp.get.mockRejectedValueOnce({ 
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce({ 
       response: { status: 500, statusText: 'Internal Server Error' } 
     })
 
@@ -268,7 +281,8 @@ describe('API error handling', () => {
   })
 
   it('handles malformed JSON responses', async () => {
-    mockHttp.get.mockRejectedValueOnce(new Error('JSON parse error'))
+    vi.clearAllMocks()
+    mockHttpGet.mockRejectedValueOnce(new Error('JSON parse error'))
 
     const result = await getOrders()
 

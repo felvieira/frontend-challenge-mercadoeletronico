@@ -23,8 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
 interface Props {
   count?: number
   lines?: number

@@ -20,17 +20,20 @@
 
       <template v-else-if="isLoading">
         <div class="space-y-6 sm:space-y-8">
-          <div class="h-40 sm:h-48 w-full bg-gray-200 animate-pulse rounded-lg"></div>
-          <div class="h-48 sm:h-64 w-full bg-gray-200 animate-pulse rounded-lg"></div>
+          <div class="h-40 sm:h-48 w-full bg-gray-200 animate-pulse rounded-lg" />
+          <div class="h-48 sm:h-64 w-full bg-gray-200 animate-pulse rounded-lg" />
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-            <div class="h-48 sm:h-64 bg-gray-200 animate-pulse rounded-lg"></div>
-            <div class="h-48 sm:h-64 bg-gray-200 animate-pulse rounded-lg"></div>
-            <div class="h-48 sm:h-64 bg-gray-200 animate-pulse rounded-lg"></div>
+            <div class="h-48 sm:h-64 bg-gray-200 animate-pulse rounded-lg" />
+            <div class="h-48 sm:h-64 bg-gray-200 animate-pulse rounded-lg" />
+            <div class="h-48 sm:h-64 bg-gray-200 animate-pulse rounded-lg" />
           </div>
         </div>
       </template>
 
-      <div v-else-if="data" class="space-y-6 sm:space-y-8">
+      <div
+        v-else-if="data"
+        class="space-y-6 sm:space-y-8"
+      >
         <OrderHeader :order="data" />
         
         <SupplierCard :supplier="data.supplier" />

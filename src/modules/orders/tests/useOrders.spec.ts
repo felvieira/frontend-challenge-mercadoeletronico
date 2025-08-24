@@ -8,7 +8,7 @@ describe('useOrders composable', () => {
       const module = await import('../composables/useOrders')
       expect(typeof module.useOrders).toBe('function')
       expect(typeof module.useOrder).toBe('function')
-    } catch (error) {
+    } catch {
       // If import fails, test that the file exists
       expect(true).toBe(true) // Basic passing test
     }
@@ -20,7 +20,7 @@ describe('useOrder composable', () => {
     try {
       const module = await import('../composables/useOrders')
       expect(module.useOrder).toBeDefined()
-    } catch (error) {
+    } catch {
       // Basic test to ensure we don't break the build
       expect(true).toBe(true)
     }

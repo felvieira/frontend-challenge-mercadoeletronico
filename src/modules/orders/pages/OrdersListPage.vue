@@ -4,17 +4,21 @@
       <header class="orders-page__header">
         <div class="orders-page__title-group">
           <ShoppingCartIcon class="orders-page__icon" />
-          <h1 class="orders-page__title">Orders</h1>
+          <h1 class="orders-page__title">
+            Orders
+          </h1>
         </div>
-        <p class="orders-page__subtitle">Manage and track your orders</p>
+        <p class="orders-page__subtitle">
+          Manage and track your orders
+        </p>
       </header>
 
       <ErrorState
         v-if="error"
         title="Failed to load orders"
         message="Please try again later."
-        @retry="refetch"
         class="orders-page__error"
+        @retry="refetch"
       />
 
       <main class="orders-page__content">
@@ -49,7 +53,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { ShoppingCartIcon } from '@heroicons/vue/24/outline'
 import { useOrders } from '../composables/useOrders'
 import OrderCard from '../components/OrderCard.vue'
@@ -58,8 +61,6 @@ import LoadingSkeleton from '@/shared/components/LoadingSkeleton.vue'
 import EmptyState from '@/shared/components/EmptyState.vue'
 
 const { data, isLoading, error, refetch } = useOrders()
-
-const hasData = computed(() => data.value && data.value.length > 0)
 </script>
 
 <style scoped>

@@ -39,7 +39,15 @@ export function formatCurrency(
   }).format(value)
 }
 
-const PHONE_PATTERNS = {
+interface PhonePattern {
+  pattern: RegExp
+  format: string
+  length?: number
+  minLength?: number
+  maxLength?: number
+}
+
+const PHONE_PATTERNS: Record<string, PhonePattern> = {
   US: {
     pattern: /^(\d{3})(\d{3})(\d{4})$/,
     format: '($1) $2-$3',
@@ -61,11 +69,11 @@ export function formatPhone(phone?: string, countryCode = 'US'): string {
   
   if (!pattern) return phone
   
-  if (pattern.length && cleaned.length === pattern.length) {
+  if ('length' in pattern && pattern.length && cleaned.length === pattern.length) {
     return cleaned.replace(pattern.pattern, pattern.format)
   }
   
-  if (pattern.minLength && pattern.maxLength) {
+  if ('minLength' in pattern && 'maxLength' in pattern && pattern.minLength && pattern.maxLength) {
     if (cleaned.length >= pattern.minLength && cleaned.length <= pattern.maxLength) {
       return cleaned.replace(pattern.pattern, pattern.format)
     }
@@ -111,7 +119,7 @@ export function getStatusColor(status?: string): string {
   
   const statusLower = status.toLowerCase()
   
-  for (const [key, value] of Object.entries(ORDER_STATUS)) {
+  for (const [, value] of Object.entries(ORDER_STATUS)) {
     if (statusLower.includes(value)) {
       return STATUS_COLORS[value as keyof typeof STATUS_COLORS] || STATUS_COLORS.default
     }

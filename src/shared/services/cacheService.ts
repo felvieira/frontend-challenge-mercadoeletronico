@@ -147,7 +147,6 @@ class CacheManager<T = any> {
   }
   
   getStats() {
-    const now = Date.now()
     let expired = 0
     let valid = 0
     

@@ -1,5 +1,5 @@
 import { http } from '@/app/providers/http'
-import { OrderSchema, type Order } from './orders.schemas'
+import { type Order } from './orders.schemas'
 
 // Transform API response to match our schema
 function transformApiOrderToSchema(apiData: any): Order {
@@ -127,12 +127,12 @@ const mockOrderData: Order = {
   }
 }
 
-export async function getOrderById(id: number): Promise<Order> {
+export async function getOrderById(_id: number): Promise<Order> {
   try {
     // Always fetch the only available order (ID 1) regardless of requested ID
     const { data } = await http.get('/orders/1')
     return transformApiOrderToSchema(data)
-  } catch (error) {
+  } catch {
     // Fallback to mock data for demo purposes
     await new Promise(resolve => setTimeout(resolve, 1000))
     
@@ -147,7 +147,7 @@ export async function getOrders(): Promise<Order[]> {
     const realOrder = transformApiOrderToSchema(data)
     
     return [realOrder]
-  } catch (error) {
+  } catch {
     // Fallback to mock data for demo purposes
     await new Promise(resolve => setTimeout(resolve, 1000))
     

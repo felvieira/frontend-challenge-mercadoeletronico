@@ -52,18 +52,27 @@
               </div>
             </div>
             
-            <div v-if="order.buyer?.email" class="flex items-start gap-3">
+            <div
+              v-if="order.buyer?.email"
+              class="flex items-start gap-3"
+            >
               <EnvelopeIcon class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 mt-0.5" />
               <span class="text-sm text-gray-500 break-all">{{ order.buyer.email }}</span>
             </div>
             
-            <div v-if="order.buyer?.phone" class="flex items-start gap-3">
+            <div
+              v-if="order.buyer?.phone"
+              class="flex items-start gap-3"
+            >
               <PhoneIcon class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 mt-0.5" />
               <span class="text-sm text-gray-500">{{ formatPhone(order.buyer.phone) }}</span>
             </div>
           </div>
 
-          <div v-if="order.createdAt" class="flex items-start gap-3 sm:justify-start">
+          <div
+            v-if="order.createdAt"
+            class="flex items-start gap-3 sm:justify-start"
+          >
             <ClockIcon class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 mt-0.5" />
             <span class="text-sm text-gray-500">
               Created at {{ formatDate(order.createdAt) }}

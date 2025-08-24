@@ -109,7 +109,7 @@ export function useLazyImage(
   imageRef: Ref<HTMLImageElement | undefined>,
   options: LazyLoadOptions = {}
 ) {
-  const { observe, unobserve } = useLazyLoad(options)
+  const { observe } = useLazyLoad(options)
   const isLoaded = ref(false)
   const hasError = ref(false)
   

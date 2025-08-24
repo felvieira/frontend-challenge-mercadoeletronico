@@ -9,7 +9,10 @@
       <span class="contact-info__primary">
         {{ primary }}
       </span>
-      <span v-if="secondary" class="contact-info__secondary">
+      <span
+        v-if="secondary"
+        class="contact-info__secondary"
+      >
         ({{ secondary }})
       </span>
     </div>
@@ -17,10 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import type { DefineComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 
 interface Props {
-  icon?: DefineComponent
+  icon?: FunctionalComponent
   primary: string
   secondary?: string
 }

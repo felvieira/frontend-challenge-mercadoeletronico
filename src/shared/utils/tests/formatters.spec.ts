@@ -3,17 +3,17 @@ import { formatCurrency, formatPhone, formatDate, getStatusColor } from '../form
 
 describe('formatCurrency', () => {
   it('formats USD currency correctly', () => {
-    expect(formatCurrency(20000, 'USD', 'en-US')).toBe('$20,000')
-    expect(formatCurrency(1000, 'USD', 'en-US')).toBe('$1,000')
-    expect(formatCurrency(0, 'USD', 'en-US')).toBe('$0')
+    expect(formatCurrency(20000, 'USD', { locale: 'en-US' })).toBe('$20,000')
+    expect(formatCurrency(1000, 'USD', { locale: 'en-US' })).toBe('$1,000')
+    expect(formatCurrency(0, 'USD', { locale: 'en-US' })).toBe('$0')
   })
 
   it('formats EUR currency correctly', () => {
-    expect(formatCurrency(15000, 'EUR', 'en-US')).toBe('€15,000')
+    expect(formatCurrency(15000, 'EUR', { locale: 'en-US' })).toBe('€15,000')
   })
 
   it('handles different locales', () => {
-    const result = formatCurrency(20000, 'USD', 'pt-BR')
+    const result = formatCurrency(20000, 'USD', { locale: 'pt-BR' })
     expect(result).toContain('20')
     expect(result).toContain('000')
   })
@@ -28,7 +28,7 @@ describe('formatCurrency', () => {
   })
 
   it('handles negative values', () => {
-    expect(formatCurrency(-5000, 'USD', 'en-US')).toBe('-$5,000')
+    expect(formatCurrency(-5000, 'USD', { locale: 'en-US' })).toBe('-$5,000')
   })
 
   it('uses default parameters correctly', () => {
@@ -36,7 +36,7 @@ describe('formatCurrency', () => {
   })
 
   it('handles decimal values', () => {
-    expect(formatCurrency(1500.50, 'USD', 'en-US')).toBe('$1,501')
+    expect(formatCurrency(1500.50, 'USD', { locale: 'en-US' })).toBe('$1,501')
   })
 })
 
